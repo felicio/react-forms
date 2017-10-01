@@ -1,6 +1,6 @@
 import React from 'react'
 
-import LoginForm from '../components/login-form'
+import LoginForm, { inputs as loginFormInputs } from '../components/login-form'
 
 class LoginFormContainer extends React.Component {
   constructor(props) {
@@ -14,20 +14,26 @@ class LoginFormContainer extends React.Component {
   }
 
   handleChange = (name, value) => {
-    this.setState(prevState => ({ inputs: { ...prevState.inputs, [name]: value } }))
+    this.setState(prevState => ({
+      inputs: { ...prevState.inputs, [name]: value },
+    }))
   }
 
   handleSubmit = event => {
     event.preventDefault()
+
     // TODO: Validate inputs: isValid(templateInputs, inputsFromState).
-    const errors = {
-      email: 'error message',
-      password: 'error message',
+    const errors = {}
+
+    loginFormInputs.map(input => (errors[input.name] = input.valid()))
+
+    const errorCount = Object.keys(errors).length
+
+    if (errorCount > 0) {
+      this.setState({ errors })
     }
 
-    this.setState({ errors })
-
-    if (Object.keys(errors) === 0) {
+    if (errorCount === 0) {
       const { email, password } = this.state.inputs
 
       const payload = {

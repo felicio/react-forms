@@ -1,17 +1,23 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-// TODO: On submit validate all with values from container state and returni error object.
+// TODO: On submit validate all with values from container state and return error object.
 export const inputs = [
   {
     type: 'email',
     name: 'email',
     required: true,
+    valid() {
+      return `${this.name} is not valid`
+    },
   },
   {
     type: 'password',
     name: 'password',
     required: true,
+    valid() {
+      return `${this.name} is not valid`
+    },
   },
 ]
 
@@ -77,13 +83,13 @@ export class FormInput extends React.Component {
           required={required}
           autoComplete="off"
           focused={focused}
-          valid={!(loginFailure && required)}
+          valid={!((loginFailure && required) || error)}
           onChange={this.handleChange}
           onFocus={() => this.setState({ focused: true })}
           onBlur={this.handleBlur}
         />
         {/* TODO: Ovewrite with internal validation. */}
-        {error && <small>{error}</small>}
+        {error && <small style={{ color: 'red' }}>{error}</small>}
       </div>
     )
   }
@@ -99,6 +105,6 @@ const Input = styled.input`
   border: none;
   outline: 0;
   border-bottom: 1px solid lightgrey;
-  ${props => (!props.valid || props.error) && css`border-bottom-color: red;`};
+  ${props => !props.valid && css`border-bottom-color: red;`};
   ${props => props.focused && css`border-bottom-color: black;`};
 `
