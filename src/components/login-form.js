@@ -17,7 +17,7 @@ export const inputs = [
 
 export default class LoginForm extends React.Component {
   render() {
-    const { onSubmit, errors, ...rest } = this.props
+    const { onChange, onSubmit, errors, ...rest } = this.props
     const formInputs = inputs.map((input, index) => (
       <FormInput
         key={index}
@@ -26,6 +26,7 @@ export default class LoginForm extends React.Component {
         type={input.type}
         name={input.name}
         required={input.required}
+        onChange={onChange}
         {...rest}
       />
     ))
@@ -44,16 +45,43 @@ export class FormInput extends React.Component {
     super(props)
 
     this.state = {
+      value: '',
+      focused: false,
     }
   }
 
+  handleChange = event => {
+    this.setState({ value: event.target.value })
+  }
+
+  handleBlur = event => {
+    const { name, value } = event.target
+
+    this.setState({ focused: false })
+    this.props.onChange(name, value)
+  }
+
   render() {
-    const { id, name, error } = this.props
+    const { id, type, name, error, required, loginFailure } = this.props
+    const { value, focused } = this.state
 
     return (
       <div style={{ marginBottom: '10px' }}>
-        <Label htmlFor={id}>{name}:</Label>
-        <Input autoComplete="off" {...this.props} />
+        <Label htmlFor={id} focused={focused} filled={value !== ''}>
+          {name}:
+        </Label>
+        <Input
+          id={id}
+          type={type}
+          name={name}
+          required={required}
+          autoComplete="off"
+          focused={focused}
+          valid={!(loginFailure && required)}
+          onChange={this.handleChange}
+          onFocus={() => this.setState({ focused: true })}
+          onBlur={this.handleBlur}
+        />
         {/* TODO: Ovewrite with internal validation. */}
         {error && <small>{error}</small>}
       </div>
@@ -61,16 +89,16 @@ export class FormInput extends React.Component {
   }
 }
 
-const Label = styled.label`margin-right: 10px;`
+const Label = styled.label`
+  margin-right: 10px;
+  ${props => (props.focused || props.filled) && css`font-weight: bolder;`};
+`
 
 const Input = styled.input`
   width: 200px;
   border: none;
   outline: 0;
   border-bottom: 1px solid lightgrey;
-  ${props =>
-    ((props.loginFailure && props.required) || props.error) &&
-    css`
-      border-bottom-color: red;
-    `};
+  ${props => (!props.valid || props.error) && css`border-bottom-color: red;`};
+  ${props => props.focused && css`border-bottom-color: black;`};
 `

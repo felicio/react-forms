@@ -13,6 +13,10 @@ class LoginFormContainer extends React.Component {
     }
   }
 
+  handleChange = (name, value) => {
+    this.setState(prevState => ({ inputs: { ...prevState.inputs, [name]: value } }))
+  }
+
   handleSubmit = event => {
     event.preventDefault()
     // TODO: Validate inputs: isValid(templateInputs, inputsFromState).
@@ -46,6 +50,7 @@ class LoginFormContainer extends React.Component {
         <LoginForm
           loginFailure={loginFailure}
           errors={errors}
+          onChange={this.handleChange}
           onSubmit={this.handleSubmit}
         />
       </div>
