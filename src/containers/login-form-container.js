@@ -20,6 +20,12 @@ class LoginFormContainer extends React.Component {
     }))
   }
 
+  handleError = (name, value) => {
+    this.setState(prevState => ({
+      errors: { ...prevState.errors, [name]: value },
+    }))
+  }
+
   handleSubmit = event => {
     event.preventDefault()
 
@@ -28,12 +34,13 @@ class LoginFormContainer extends React.Component {
     // FIXME: Choose different interator.
     loginFormInputs.map(
       input =>
-        (errors[input.name] = input.valid(this.state.inputs[input.name])),
+        (errors[input.name] = input.valide(this.state.inputs[input.name])),
     )
 
-    const errorCount = Object.keys(errors).length
+    const errorCount = Object.values(errors).filter(error => error).length
 
     if (errorCount > 0) {
+      console.log('errors:', errors)
       this.setState({ errors })
     }
 
@@ -41,7 +48,6 @@ class LoginFormContainer extends React.Component {
       const { email, password } = this.state.inputs
 
       const payload = {
-        id: Date.now(),
         email,
         password,
       }
@@ -61,6 +67,7 @@ class LoginFormContainer extends React.Component {
           loginFailure={loginFailure}
           errors={errors}
           onChange={this.handleChange}
+          onError={this.handleError}
           onSubmit={this.handleSubmit}
         />
       </div>

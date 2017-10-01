@@ -6,7 +6,7 @@ export const inputs = [
     type: 'email',
     name: 'email',
     required: true,
-    valid(value) {
+    valide(value) {
       if (!value && this.required) {
         return `${this.name} is required`
       }
@@ -17,7 +17,7 @@ export const inputs = [
     type: 'password',
     name: 'password',
     required: true,
-    valid(value) {
+    valide(value) {
       if (!value && this.required) {
         return `${this.name} is required`
       }
@@ -28,7 +28,7 @@ export const inputs = [
 export default class LoginForm extends React.Component {
   render() {
     // FIXME: Delete ...rest.
-    const { onChange, onSubmit, errors, ...rest } = this.props
+    const { onChange, onError, onSubmit, errors, ...rest } = this.props
     const formInputs = inputs.map((input, index) => (
       <FormInput
         key={index}
@@ -38,6 +38,8 @@ export default class LoginForm extends React.Component {
         name={input.name}
         required={input.required}
         onChange={onChange}
+        onError={onError}
+        validate={input.valide}
         {...rest}
       />
     ))
@@ -65,15 +67,19 @@ export class FormInput extends React.Component {
     this.setState({ value: event.target.value })
   }
 
+  // FIXME: Pressing return key does not trigger onblur event.
   handleBlur = event => {
     const { name, value } = event.target
+    const { onError, onChange } = this.props
 
+    onError(name, this.props.validate(value))
+    onChange(name, value)
     this.setState({ focused: false })
-    this.props.onChange(name, value)
   }
 
   render() {
-    const { id, type, name, error, required, loginFailure } = this.props
+    // TODO: Rename loginFailure prop to isFormValid.
+    const { id, type, name, required, loginFailure, error } = this.props
     const { value, focused } = this.state
 
     return (
@@ -93,7 +99,6 @@ export class FormInput extends React.Component {
           onFocus={() => this.setState({ focused: true })}
           onBlur={this.handleBlur}
         />
-        {/* TODO: Ovewrite with internal validation. */}
         {error && <small style={{ color: 'red' }}>{error}</small>}
       </div>
     )
