@@ -15,10 +15,10 @@ class LoginFormContainer extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault()
-    // TODO: Validate inputs.
+    // TODO: Validate inputs: isValid(templateInputs, inputsFromState).
     const errors = {
-      email: 'not valid',
-      password: 'not valid',
+      email: 'error message',
+      password: 'error message',
     }
 
     this.setState({ errors })
