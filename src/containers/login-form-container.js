@@ -9,6 +9,7 @@ class LoginFormContainer extends React.Component {
     this.state = {
       inputs: {},
       errors: {},
+      // Received prop from a store.
       loginFailure: false,
     }
   }
@@ -22,10 +23,13 @@ class LoginFormContainer extends React.Component {
   handleSubmit = event => {
     event.preventDefault()
 
-    // TODO: Validate inputs: isValid(templateInputs, inputsFromState).
     const errors = {}
 
-    loginFormInputs.map(input => (errors[input.name] = input.valid()))
+    // FIXME: Choose different interator.
+    loginFormInputs.map(
+      input =>
+        (errors[input.name] = input.valid(this.state.inputs[input.name])),
+    )
 
     const errorCount = Object.keys(errors).length
 
@@ -64,5 +68,4 @@ class LoginFormContainer extends React.Component {
   }
 }
 
-// TODO: Connect to store.
 export default LoginFormContainer

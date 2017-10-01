@@ -1,28 +1,33 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-// TODO: On submit validate all with values from container state and return error object.
 export const inputs = [
   {
     type: 'email',
     name: 'email',
     required: true,
-    valid() {
-      return `${this.name} is not valid`
+    valid(value) {
+      if (!value && this.required) {
+        return `${this.name} is required`
+      }
+      // !notValid && return 'custom message'
     },
   },
   {
     type: 'password',
     name: 'password',
     required: true,
-    valid() {
-      return `${this.name} is not valid`
+    valid(value) {
+      if (!value && this.required) {
+        return `${this.name} is required`
+      }
     },
   },
 ]
 
 export default class LoginForm extends React.Component {
   render() {
+    // FIXME: Delete ...rest.
     const { onChange, onSubmit, errors, ...rest } = this.props
     const formInputs = inputs.map((input, index) => (
       <FormInput
