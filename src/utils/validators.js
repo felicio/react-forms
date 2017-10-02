@@ -4,3 +4,10 @@ export function emailIsValid(email) {
 
   return regex.test(email)
 }
+
+/** Validate string made up of nothing but whitespace as falsy value. */
+export function valueIsEmpty(value) {
+  const regex = /\s*/
+
+  return !value.split(regex).join('')
+}
