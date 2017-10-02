@@ -1,6 +1,6 @@
 import React from 'react'
 
-import LoginForm, { inputs as loginFormInputs } from '../components/login-form'
+import LoginForm, { inputs as formInputs } from '../components/login-form'
 
 class LoginFormContainer extends React.Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class LoginFormContainer extends React.Component {
       // Received prop from a store.
       loginFailure: false,
     }
+    this.formIsValid = formIsValid.bind(this)
   }
 
   handleChange = (name, value) => {
@@ -20,6 +21,7 @@ class LoginFormContainer extends React.Component {
     }))
   }
 
+  // TODO: Rename method.
   handleError = (name, value) => {
     this.setState(prevState => ({
       errors: { ...prevState.errors, [name]: value },
@@ -29,22 +31,9 @@ class LoginFormContainer extends React.Component {
   handleSubmit = event => {
     event.preventDefault()
 
-    const errors = {}
-
-    // FIXME: Choose different interator.
-    loginFormInputs.map(
-      input =>
-        (errors[input.name] = input.valide(this.state.inputs[input.name])),
-    )
-
-    const errorCount = Object.values(errors).filter(error => error).length
-
-    if (errorCount > 0) {
-      console.log('errors:', errors)
-      this.setState({ errors })
-    }
-
-    if (errorCount === 0) {
+    // TODO: Bind validating funciton in class constructor.
+    // if (formIsValid.call(this, loginFormInputs)) {
+    if (this.formIsValid(formInputs)) {
       const { email, password } = this.state.inputs
 
       const payload = {
@@ -73,6 +62,20 @@ class LoginFormContainer extends React.Component {
       </div>
     )
   }
+}
+
+/** Validates all form inputs and optionally sets state of `errors` object. */
+function formIsValid(inputs) {
+  const errors = {}
+
+  inputs.forEach(
+    input =>
+      (errors[input.name] = input.validate(this.state.inputs[input.name])),
+  )
+
+  const errorValues = Object.values(errors).filter(error => error !== undefined)
+
+  return errorValues.length > 0 ? (this.setState({ errors }), false) : true
 }
 
 export default LoginFormContainer

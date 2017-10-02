@@ -6,7 +6,7 @@ export const inputs = [
     type: 'email',
     name: 'email',
     required: true,
-    valide(value) {
+    validate(value) {
       if (!value && this.required) {
         return `${this.name} is required`
       }
@@ -17,7 +17,7 @@ export const inputs = [
     type: 'password',
     name: 'password',
     required: true,
-    valide(value) {
+    validate(value) {
       if (!value && this.required) {
         return `${this.name} is required`
       }
@@ -39,7 +39,7 @@ export default class LoginForm extends React.Component {
         required={input.required}
         onChange={onChange}
         onError={onError}
-        validate={input.valide}
+        validate={input.validate}
         {...rest}
       />
     ))
@@ -72,7 +72,7 @@ export class FormInput extends React.Component {
     const { name, value } = event.target
     const { onError, onChange } = this.props
 
-    onError(name, this.props.validate(value))
+    onError(name, this.props.validate(value)) // validate is bound to props object
     onChange(name, value)
     this.setState({ focused: false })
   }
