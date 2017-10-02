@@ -5,9 +5,9 @@ export function emailIsValid(email) {
   return regex.test(email)
 }
 
-/** Validate string made up of nothing but whitespace as falsy value. */
+/** Validate string made up of nothing but whitespace or empty as falsy value. */
 export function valueIsEmpty(value) {
   const regex = /\s*/
 
-  return !value.split(regex).join('')
+  return !value || !value.split(regex).join('')
 }
