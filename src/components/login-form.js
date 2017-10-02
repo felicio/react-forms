@@ -1,6 +1,9 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
+import { emailIsValid } from '../utils/validators'
+
+// TODO: Move inputs somewhere else.
 export const inputs = [
   {
     type: 'email',
@@ -10,7 +13,10 @@ export const inputs = [
       if (!value && this.required) {
         return `${this.name} is required`
       }
-      // !notValid && return 'custom message'
+
+      if (!emailIsValid(value)) {
+        return `${this.name} is not valid`
+      }
     },
   },
   {
