@@ -33,20 +33,19 @@ export const inputs = [
 
 export default class LoginForm extends React.Component {
   render() {
-    // FIXME: Delete ...rest.
-    const { onChange, onError, onSubmit, errors, ...rest } = this.props
+    const { onChange, onError, onSubmit, errors, failure } = this.props
     const formInputs = inputs.map((input, index) => (
       <FormInput
         key={index}
         id={index}
         error={errors[input.name]}
+        failure={failure}
         type={input.type}
         name={input.name}
         required={input.required}
         onChange={onChange}
         onError={onError}
         validate={input.validate}
-        {...rest}
       />
     ))
 
@@ -84,8 +83,7 @@ export class FormInput extends React.Component {
   }
 
   render() {
-    // TODO: Rename loginFailure prop to isFormValid.
-    const { id, type, name, required, loginFailure, error } = this.props
+    const { id, type, name, required, failure, error } = this.props
     const { value, focused } = this.state
 
     return (
@@ -100,7 +98,7 @@ export class FormInput extends React.Component {
           required={required}
           autoComplete="off"
           focused={focused}
-          valid={!((loginFailure && required) || error)}
+          valid={!((failure && required) || error)}
           onChange={this.handleChange}
           onFocus={() => this.setState({ focused: true })}
           onBlur={this.handleBlur}
