@@ -21,7 +21,6 @@ class LoginFormContainer extends React.Component {
     }))
   }
 
-  // TODO: Rename method.
   handleError = (name, value) => {
     this.setState(prevState => ({
       errors: { ...prevState.errors, [name]: value },
@@ -31,8 +30,6 @@ class LoginFormContainer extends React.Component {
   handleSubmit = event => {
     event.preventDefault()
 
-    // TODO: Bind validating funciton in class constructor.
-    // if (formIsValid.call(this, loginFormInputs)) {
     if (this.formIsValid(formInputs)) {
       const { email, password } = this.state.inputs
 
