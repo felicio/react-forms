@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-import { emailIsValid } from '../utils/validators'
+import { emailIsValid, valueIsEmpty } from '../utils/validators'
 
 // TODO: Move inputs somewhere else.
 export const inputs = [
@@ -10,7 +10,7 @@ export const inputs = [
     name: 'email',
     required: true,
     validate(value) {
-      if (!value && this.required) {
+      if (valueIsEmpty(value) && this.required) {
         return `${this.name} is required`
       }
 
@@ -24,7 +24,7 @@ export const inputs = [
     name: 'password',
     required: true,
     validate(value) {
-      if (!value && this.required) {
+      if (valueIsEmpty(value) && this.required) {
         return `${this.name} is required`
       }
     },
