@@ -1,7 +1,16 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-import { emailIsValid, valueIsEmpty } from '../utils/validators'
+import { emailIsValid, valueIsEmpty, email } from '../utils/validators'
+
+export const formDefinition = [
+  {
+    type: 'email',
+    name: 'email', // used as label too
+    required: true,
+    validators: [email],
+  }
+]
 
 export const inputs = [
   {
