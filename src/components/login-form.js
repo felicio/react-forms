@@ -39,7 +39,7 @@ export const inputs = [
   },
 ]
 
-export default class LoginForm extends React.Component {
+export default class LoginForm extends React.PureComponent {
   render() {
     const { onChange, onError, onSubmit, errors, failure } = this.props
     const formInputs = inputs.map((input, index) => (
