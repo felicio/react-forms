@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components'
 
 import { emailIsValid, valueIsEmpty } from '../utils/validators'
 
-// TODO: Move inputs somewhere else.
 export const inputs = [
   {
     type: 'email',
@@ -58,7 +57,8 @@ export default class LoginForm extends React.Component {
   }
 }
 
-export class FormInput extends React.Component {
+// TODO: Explain why does every input get rerender together with form.
+export class FormInput extends React.PureComponent {
   constructor(props) {
     super(props)
 
