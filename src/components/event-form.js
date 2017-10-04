@@ -26,19 +26,31 @@ const inputDefinitions = [
   },
 ]
 
-const EventForm = ({ renderInput, handleSubmit }) => (
-  <div>
-    <h1>Edit event</h1>
-    <form onSubmit={handleSubmit} noValidate autoComplete="off">
-      {/* TODO: Render inputs as an array or selectively. */}
-      {renderInput('title')}
-      {renderInput('date')}
-      {renderInput('time')}
-      {renderInput('capacity')}
-      <button type="submit">Done</button>
-    </form>
-  </div>
-)
+class EventForm extends React.Component {
+  handleSubmit = event => {
+    event.preventDefault()
+
+    // TODO: Validate form.
+  }
+
+  render() {
+    const { renderInput } = this.props
+
+    return (
+      <div>
+        <h1>Edit event</h1>
+        <form onSubmit={this.handleSubmit} noValidate autoComplete="off">
+          {/* TODO: Render inputs as an array or selectively. */}
+          {renderInput('title')}
+          {renderInput('date')}
+          {renderInput('time')}
+          {renderInput('capacity')}
+          <button type="submit">Done</button>
+        </form>
+      </div>
+    )
+  }
+}
 
 EventForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
