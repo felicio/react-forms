@@ -10,6 +10,7 @@ const FormInput = ({
   defaultValue,
   focused,
   setFocused,
+  handleChange,
 }) => (
   <div style={{ marginBottom: '10px' }}>
     <Label htmlFor={name} focused={focused}>
@@ -24,6 +25,7 @@ const FormInput = ({
       focused={focused}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
+      onChange={handleChange}
       autoComplete="off"
     />
   </div>

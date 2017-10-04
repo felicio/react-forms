@@ -47,7 +47,7 @@ EventForm.propTypes = {
 
 // TODO: Serialize data
 /** Return object initilized for named input objects (definitions) from a specified data set. */
-const initializeInputs = (definitions, data, handler) => {
+const initializeInputs = (definitions, data, handleChange) => {
   const inputs = {}
 
   definitions.forEach(definition => {
@@ -56,6 +56,7 @@ const initializeInputs = (definitions, data, handler) => {
     inputs[name] = {
       ...definition,
       value: data[name] || '',
+      handleChange,
     }
   })
 

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 
 import FormInput from '../components/form-input'
 
-const withDefinition = (inputDefinitions, initializeInputs) => WrappedComponent =>
+const withDefinition = (
+  inputDefinitions,
+  initializeInputs,
+) => WrappedComponent =>
   class extends PureComponent {
     static defaultProps = {
       data: {},
@@ -17,13 +20,17 @@ const withDefinition = (inputDefinitions, initializeInputs) => WrappedComponent 
       super(props)
 
       this.state = {
-        inputs: initializeInputs(inputDefinitions, props.data),
+        inputs: initializeInputs(
+          inputDefinitions,
+          props.data,
+          this.handleChange,
+        ),
       }
     }
 
     renderInput = inputName => {
       const input = this.state.inputs[inputName]
-      const { name, type, required, value } = input
+      const { name, type, required, value, handleChange } = input
 
       return (
         <FormInput
@@ -32,8 +39,20 @@ const withDefinition = (inputDefinitions, initializeInputs) => WrappedComponent 
           type={type}
           required={required}
           defaultValue={value}
+          handleChange={handleChange}
         />
       )
+    }
+
+    handleChange = event => {
+      const { name, value } = event.target
+
+      this.setState(prevState => ({
+        inputs: {
+          ...prevState.inputs,
+          [name]: { ...prevState.inputs[name], value },
+        },
+      }))
     }
 
     render() {
