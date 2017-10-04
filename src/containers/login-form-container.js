@@ -47,7 +47,7 @@ class LoginFormContainer extends React.Component {
 
     return (
       <div>
-        <h1>Login form</h1>
+        <h1>Login</h1>
         {loginFailure && <span style={{ color: 'red' }}>Error</span>}
         <LoginForm
           failure={loginFailure}
