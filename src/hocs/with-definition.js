@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import FormInput from '../components/form-input'
 
-const withDefinition = (inputDefinitions, initializeInputs) => Component =>
+const withDefinition = (inputDefinitions, initializeInputs) => WrappedComponent =>
   class extends PureComponent {
     static defaultProps = {
       data: {},
@@ -37,7 +37,7 @@ const withDefinition = (inputDefinitions, initializeInputs) => Component =>
     }
 
     render() {
-      return <Component {...this.props} renderInput={this.renderInput} />
+      return <WrappedComponent {...this.props} renderInput={this.renderInput} />
     }
   }
 
