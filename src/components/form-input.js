@@ -1,40 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { compose, withState } from 'recompose'
 import styled, { css } from 'styled-components'
 
-export default class FormInput extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      focused: false,
-    }
-  }
-
-  render() {
-    const { name, type, required, defaultValue } = this.props
-    const { focused } = this.state
-
-    return (
-      <div style={{ marginBottom: '10px' }}>
-        <Label htmlFor={name} focused={focused}>
-          {name}:
-        </Label>
-        <Input
-          id={name}
-          name={name}
-          type={type}
-          required={required}
-          defaultValue={defaultValue}
-          focused={focused}
-          onFocus={() => this.setState({ focused: true })}
-          onBlur={() => this.setState({ focused: false })}
-          autoComplete="off"
-        />
-      </div>
-    )
-  }
-}
+const FormInput = ({
+  name,
+  type,
+  required,
+  defaultValue,
+  focused,
+  setFocused,
+}) => (
+  <div style={{ marginBottom: '10px' }}>
+    <Label htmlFor={name} focused={focused}>
+      {name}:
+    </Label>
+    <Input
+      id={name}
+      name={name}
+      type={type}
+      required={required}
+      defaultValue={defaultValue}
+      focused={focused}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      autoComplete="off"
+    />
+  </div>
+)
 
 FormInput.propTypes = {
   defaultValue: PropTypes.any,
@@ -42,6 +35,8 @@ FormInput.propTypes = {
   required: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
 }
+
+export default compose(withState('focused', 'setFocused', false))(FormInput)
 
 const Label = styled.label`
   margin-right: 10px;
