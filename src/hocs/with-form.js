@@ -6,57 +6,51 @@ import Input from '../components/input'
 // TODO: Define function helpers.
 import { getNewFieldValue, getInitialFormState, isFormValid } from './helpers'
 
+const withForm = fieldDefinitions => Component =>
+  class extends PureComponent {
+    constructor(props) {
+      super(props)
 
-const withForm = fieldDefinitions => Component => class extends PureComponent {
-  static propTypes = {
-    formData: PropTypes.object,
-  }
-
-  constructor(props) {
-    super(props)
-    // console.info('initializing form with this data:', props.formData)
-    const definitions = typeof fieldDefinitions === 'function' ? fieldDefinitions(props) : fieldDefinitions
-    this.state =
-      getInitialFormState(definitions, props.formData, this.onChange)
-  }
-
-  renderField = name => {
-    const data = this.state[name]
-    if (!data) {
-      throw new Error('missing field definition for', name)
+      const definitions =
+        typeof fieldDefinitions === 'function'
+          ? fieldDefinitions(props)
+          : fieldDefinitions
+      this.state = getInitialFormState(
+        definitions,
+        props.formData,
+        this.onChange,
+      )
     }
 
-    return  <Input {...data} />
-  }
+    renderField = name => {
+      const data = this.state[name]
 
-  onChange = name => value =>
-    this.setState({ [name]: getNewFieldValue(this.state[name], value) })
-
-  serialize = cb => {
-    const serialized = map(prop('value'), this.state)
-    if (isFormValid(this.state)) {
-      return cb(serialized)
+      return <Input {...data} />
     }
 
-    // set pristine to false for every field, which will result in showing error on invalid fields
-    return this.setState(
-      map(x => ({ ...x, pristine: false }), this.state))
-  }
+    onChange = name => value =>
+      this.setState({ [name]: getNewFieldValue(this.state[name], value) })
 
-  render() {
-    // console.warn('form internal state')
-    // console.table(this.state)
-    // console.warn('form overall state, valid: ', isFormValid(this.state))
+    serialize = cb => {
+      const serialized = map(prop('value'), this.state)
+      if (isFormValid(this.state)) {
+        return cb(serialized)
+      }
 
-    return (
-      <Component
-        {...this.props}
-        renderField={this.renderField}
-        serialize={this.serialize}
-        isValid={isFormValid(this.state)}
-      />
-    )
+      // set pristine to false for every field, which will result in showing error on invalid fields
+      return this.setState(map(x => ({ ...x, pristine: false }), this.state))
+    }
+
+    render() {
+      return (
+        <Component
+          {...this.props}
+          renderField={this.renderField}
+          serialize={this.serialize}
+          isValid={isFormValid(this.state)}
+        />
+      )
+    }
   }
-}
 
 export default withForm
