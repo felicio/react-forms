@@ -26,7 +26,6 @@ const inputDefinitions = [
   },
 ]
 
-// TODO: Add state to component below.
 const EventForm = ({ renderInput, handleSubmit }) => (
   <div>
     <h1>Edit event</h1>
@@ -46,6 +45,7 @@ EventForm.propTypes = {
   renderInput: PropTypes.func.isRequired,
 }
 
+// TODO: Serialize data
 /** Return object initilized for named input objects (definitions) from a specified data set. */
 const initializeInputs = (definitions, data, handler) => {
   const inputs = {}
@@ -53,7 +53,6 @@ const initializeInputs = (definitions, data, handler) => {
   definitions.forEach(definition => {
     const name = definition.name
 
-    // TODO: Control special assignment of date and time properties.
     inputs[name] = {
       ...definition,
       value: data[name] || '',
