@@ -8,7 +8,7 @@ export function emailIsValid(email) {
 }
 
 /** Validate string made up of nothing but whitespace or empty as falsy value. */
-export function valueIsEmpty(value) {
+export function isEmpty(value) {
   const regex = /\s*/
 
   return !value || !value.split(regex).join('')
