@@ -7,10 +7,12 @@ const FormInput = ({
   name,
   type,
   required,
+  error,
   failure,
   defaultValue,
   focused,
   setFocused,
+  handleBlur,
   handleChange,
 }) => (
   <Wrapper>
@@ -21,25 +23,34 @@ const FormInput = ({
       id={name}
       name={name}
       type={type}
-      failure={failure}
+      valid={!(error || failure)}
       required={required}
       defaultValue={defaultValue}
       focused={focused}
       onFocus={() => setFocused(true)}
-      onBlur={() => setFocused(false)}
+      onBlur={(event) => {
+        const { name, value } = event.target
+
+        handleBlur(name, value)
+        setFocused(false)
+      }}
       onChange={handleChange}
     />
+    {error && !focused && <small style={{ color: 'red' }}>{error}</small>}
   </Wrapper>
 )
 
 FormInput.defaultProps = {
   required: false,
+  error: '',
   failure: false,
 }
 
 FormInput.propTypes = {
   defaultValue: PropTypes.any,
+  error: PropTypes.string,
   failure: PropTypes.bool,
+  handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   required: PropTypes.bool,
@@ -59,7 +70,7 @@ export const Input = styled.input.attrs({
   border: none;
   border-bottom: 1px solid lightgrey;
   padding: 0 10px;
-  ${props => props.failure && css`border-bottom-color: red;`};
+  ${props => !props.valid && css`border-bottom-color: red;`};
   ${props => props.focused && css`border-bottom-color: black;`};
 `
 
