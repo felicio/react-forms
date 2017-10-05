@@ -1,49 +1,52 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { emailIsValid, valueIsEmpty } from '../utils/validators'
-
 import FormInput from './form-input'
 import PasswordInput from './password-input'
 
-export const inputs = [
-  {
-    type: 'email',
-    name: 'email',
-    required: true,
-    validate(value) {
-      if (valueIsEmpty(value) && this.required) {
-        return `${this.name} is required`
-      }
-
-      if (!emailIsValid(value)) {
-        return `${this.name} is not valid`
-      }
-    },
-  },
-]
-
-export default class LoginForm extends React.PureComponent {
-  render() {
-    const { handleSubmit, handleChange, failure, valid } = this.props
-
-    return (
-      <form onSubmit={handleSubmit} noValidate autoComplete="off">
-        <FormInput name="email" type="email" failure={failure} handleChange={handleChange} required />
-        <PasswordInput name="password" failure={failure} handleChange={handleChange} />
-        <button type="submit" disabled={!valid}>Submit</button>
-      </form>
-    )
-  }
-}
+const LoginForm = ({
+  handleSubmit,
+  handleChange,
+  handleBlur,
+  failure,
+  filled,
+  errors,
+}) => (
+  <form onSubmit={handleSubmit} noValidate autoComplete="off">
+    <FormInput
+      name="email"
+      type="email"
+      error={errors['email']}
+      failure={failure}
+      handleBlur={handleBlur}
+      handleChange={handleChange}
+      required
+    />
+    <PasswordInput
+      name="password"
+      error={errors['password']}
+      failure={failure}
+      handleBlur={handleBlur}
+      handleChange={handleChange}
+    />
+    <button type="submit" disabled={!filled}>
+      Submit
+    </button>
+  </form>
+)
 
 LoginForm.defaultProps = {
+  errors: {},
   failure: false,
 }
 
 LoginForm.propTypes = {
+  errors: PropTypes.object,
   failure: PropTypes.bool,
+  filled: PropTypes.bool.isRequired,
+  handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  valid: PropTypes.bool.isRequired,
 }
+
+export default LoginForm
