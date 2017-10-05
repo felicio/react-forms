@@ -103,7 +103,7 @@ class LoginFormContainer extends React.Component {
         <LoginForm
           errors={errors}
           failure={failure}
-          filled={this.isFilled() && !this.hasErrors()}
+          filled={this.isFilled()}
           handleBlur={this.handleBlur}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
