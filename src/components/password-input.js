@@ -11,14 +11,19 @@ class PasswordInput extends React.Component {
 
   handleFocus = event => this.setState({ focused: true })
 
-  handleBlur = event => this.setState({ focused: false })
+  handleBlur = event => {
+    const { name, value } = event.target
+
+    this.setState({ focused: false })
+    this.props.handleBlur(name, value)
+  }
 
   handleMouseDown = event => this.setState({ type: 'text' })
 
   handleMouseRelease = event => this.setState({ type: 'password' })
 
   render() {
-    const { name, failure, handleChange } = this.props
+    const { name, error, failure, handleChange } = this.props
     const { focused } = this.state
 
     return (
@@ -34,7 +39,7 @@ class PasswordInput extends React.Component {
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           onChange={handleChange}
-          failure={failure}
+          valid={!(error || failure)}
           required
         />
         <button
@@ -51,13 +56,16 @@ class PasswordInput extends React.Component {
 }
 
 PasswordInput.defaultProps = {
+  error: '',
   failure: false,
 }
 
 PasswordInput.propTypes = {
+  error: PropTypes.string,
+  failure: PropTypes.bool,
+  handleBlur: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  failure: PropTypes.bool,
 }
 
 export default PasswordInput
