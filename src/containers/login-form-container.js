@@ -2,6 +2,7 @@ import React from 'react'
 
 import LoginForm, { inputs as formInputs } from '../components/login-form'
 
+// TODO: Handle change, validation and submitting in form's HoC.
 class LoginFormContainer extends React.Component {
   constructor(props) {
     super(props)
@@ -9,13 +10,14 @@ class LoginFormContainer extends React.Component {
     this.state = {
       inputs: {},
       errors: {},
-      // Received prop from a store.
-      loginFailure: false,
+      failure: false, // Received prop from a store.
     }
     this.formIsValid = formIsValid.bind(this)
   }
 
-  handleChange = (name, value) => {
+  handleChange = event => {
+    const { name, value } = event.target
+
     this.setState(prevState => ({
       inputs: { ...prevState.inputs, [name]: value },
     }))
@@ -43,18 +45,20 @@ class LoginFormContainer extends React.Component {
   }
 
   render() {
-    const { loginFailure, errors } = this.state
+    const { failure, errors } = this.state
 
     return (
       <div>
         <h1>Login</h1>
-        {loginFailure && <span style={{ color: 'red' }}>Error</span>}
+        {failure && (
+          <small style={{ color: 'red' }}>
+            Incorrect email or password.
+          </small>
+        )}
         <LoginForm
-          failure={loginFailure}
-          errors={errors}
-          onChange={this.handleChange}
-          onError={this.handleError}
-          onSubmit={this.handleSubmit}
+          failure={failure}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
         />
       </div>
     )
