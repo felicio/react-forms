@@ -74,6 +74,11 @@ export const Input = styled.input.attrs({
   ${props => props.focused && css`border-bottom-color: black;`};
 `
 
+Input.propTypes = {
+  focused: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+}
+
 const Wrapper = styled.div`
   display: flex;
   align-items: baseline;
