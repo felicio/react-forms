@@ -44,6 +44,7 @@ class PasswordInput extends React.Component {
           onMouseUp={this.handleMouseRelease}>
           Show
         </button>
+        {error && <small style={{ color: 'red' }}>{error}</small>}
       </div>
     )
   }

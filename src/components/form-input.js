@@ -36,7 +36,7 @@ const FormInput = ({
       }}
       onChange={handleChange}
     />
-    {error && !focused && <small style={{ color: 'red' }}>{error}</small>}
+    {error && <small style={{ color: 'red' }}>{error}</small>}
   </Wrapper>
 )
 
